@@ -12,13 +12,15 @@ import Foundation
 
 class LocationParser {
     
-    static func getLocations() -> Locations {
+    typealias completionHandler = (_success: Bool, _locations: Locations)
+    
+    static func getLocations(completion: @escaping (Locations) -> ()) {
         var locationsArray: Locations?
         let url = URL(string: "https://placeumlocations.s3-eu-west-1.amazonaws.com/locations.json")
         print("getting locations")
         let task = URLSession.shared.locationsTask(with: url!) { location, response, error in
             if let locationData = location {
-                locationsArray = locationData
+                completion(locationData)
             } else if let error = error {
                 print(error)
             } else if let response = response {
@@ -28,7 +30,7 @@ class LocationParser {
         task.resume()
         
         //Returns this but empty because returns before URLSession has completed
-        return locationsArray ?? []
+        
     }
 }
 // MARK: - Location
