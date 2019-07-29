@@ -15,25 +15,19 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        LocationParser.getLocations() { (response) in
-            if response.count > 0 {
-                self.allLocations = response
+        LocationParser.getLocations() { (success, data) in
+            if success {
+                self.allLocations = data
+                self.commence()
             } else {
                 //error
             }
         }
-        
-        print(allLocations)
     }
     
-    func attemptLocationsFetch() {
-        LocationParser.getLocations() { (response) in
-            if response.count > 0 {
-                self.allLocations = response
-            } else {
-                //error
-            }
-        }
+    func commence() {
+        print(allLocations[0].locTitle)
     }
+    
 }
 
